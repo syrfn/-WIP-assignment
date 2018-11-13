@@ -13,6 +13,7 @@ urlpage = 'https://www.tokopedia.com/p/makanan-minuman/biskuit-kue'
 options = Options()
 options.headless = True
 driver = webdriver.Chrome(options=options, executable_path = '/usr/local/bin/chromedriver/')
+window_setting = 'window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;'
 
 # xpath only for promoted items
 xpath_promoted_product_name = '//div[@id="promo-new"]//span[@class="detail__name"]'
@@ -27,7 +28,7 @@ listWebElement_link = []
 #get the web page
 def start_browser(urlpage):
     driver.get(urlpage)
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
+    driver.execute_script(window_setting)
     time.sleep(30)
     print(urlpage)
 
@@ -37,9 +38,11 @@ def get_data_list(xpath_product_name, xpath_link_shop):
         result_product_name = driver.find_elements_by_xpath(xpath_product_name)
         store_data_to_array(result_product_name, result_link_shop)
     except(WebDriverException):
-        for i in range(len(xpath_product_name)):
-            result_link_shop = driver.find_elements_by_xpath(xpath_link_shop[i])
-            result_product_name = driver.find_elements_by_xpath(xpath_product_name[i])
+        for xpath in range(len(xpath_product_name)):
+            result_link_shop = driver.find_elements_by_xpath(
+                xpath_link_shop[xpath])
+            result_product_name = driver.find_elements_by_xpath(
+                xpath_product_name[xpath])
             listWebElement_product.append(result_product_name)
             listWebElement_link.append(result_link_shop)
             store_data_to_array(result_product_name, result_link_shop)
