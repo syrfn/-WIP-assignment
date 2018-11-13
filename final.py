@@ -64,7 +64,7 @@ def get_list_data_content_dir():
     except(NoSuchElementException):
         pass
 
-if __name__ = "__main__":    
+if __name__ == "__main__":    
     start_browser(urlpage)
     get_data_list(xpath_promoted_product_name, xpath_promoted_link_shop)
     get_list_data_content_dir()
