@@ -1,6 +1,7 @@
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import WebDriverException
 import urllib.request
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -26,14 +27,16 @@ xpath_list_product_content_dir = []
 xpath_list_link_shop_content_dir = []
 listWebElement_product = []
 listWebElement_link = []
-url = []
+categoryUrl_array = []
+categoryPage_array = []
 
 def getAllCategoryLink():
     print("Now getting all category link \n")
-    a = driver.find_elements_by_xpath(
+    categoryElement = driver.find_elements_by_xpath(
         '//div[@id="DeptIntermedController"]//div[@class="title ta-center"]//a')
-    for i in range(len(a)):
-        url.append(a[i].get_attribute("href"))
+    for element in range(categoryElement):
+        categoryUrl_array.append(
+            categoryElement[element].get_attribute("href"))
 
 '''start the browser and get the web page'''
 def getPage(urlpage):
@@ -72,6 +75,7 @@ def get_list_data_content_dir():
         pass
 
 '''Store data to array'''
+#ganti jd storeDataToArray
 def store_data_to_array(result_product_name, result_link_shop):
     try:
         for item_list in range(len(result_product_name)):
@@ -82,12 +86,32 @@ def store_data_to_array(result_product_name, result_link_shop):
     except(AttributeError):
         pass
 
-if __name__ == "__main__":    
-    start_browser(urlpage)
-    get_data_list(xpath_promoted_product_name, xpath_promoted_link_shop)
-    get_list_data_content_dir()
-    get_data_list(xpath_list_product_content_dir, xpath_list_link_shop_content_dir)
-    store_data_to_array(listWebElement_product, listWebElement_link)
 
+if __name__ == "__main__":
+    print("Scraping page: " + startUrl + '\n')
+    getPage(startUrl)
+    print("This page contains some category URLs. Let's get that! \n")
+    getAllCategoryLink()
+    print("Finished getting all category links \n")
+    for url_category in categoryUrl_array:
+        getCategoryPageUrl(url_category)
+    print("Here's all category links:")
+    print(categoryUrl_array)
+    try:
+        for url_final in categoryPage_array:
+            print("Will scrape following links. Bear with me!")
+            print(categoryPage_array)
+            print("\n")
+#             for page in categoryPage_array:
+            print("Getting category page data of from url: " + url_final + "\n")
+            getPage(url_final)
+            get_data_list(xpath_promoted_product_name, xpath_promoted_link_shop)
+            get_list_data_content_dir()
+            get_data_list(xpath_list_product_content_dir, xpath_list_link_shop_content_dir)
+            print("Storing data from url: " + url_final + "\n")
+            store_data_to_array(listWebElement_product, listWebElement_link)
+            print("Done storing data from url: " + url_final + "\n")
+    except(TimeoutException):
+        print("Timeout! Unfortunatelly, you have to start over again :(( ")
 # save data to csv
 # save data to db
