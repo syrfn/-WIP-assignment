@@ -7,9 +7,14 @@ from selenium import webdriver
 import pandas as pd
 import time
 
-startUrl = 'https://www.tokopedia.com/hot/makanan-vegetarian'
+veggie_url = [
+    'https://www.tokopedia.com/hot/makanan-vegetarian',
+    'https://www.tokopedia.com/p/makanan-minuman/makanan-manis/buah-buahan',
+    'https://www.tokopedia.com/hot/sayuran-segar', 
+    'https://www.tokopedia.com/p/makanan-minuman/makanan-beku/buah'
+    ]
 
-'''Headless browser configuration'''
+# Headless browser configuration
 options = Options()
 options.headless = True
 driver = webdriver.Chrome(options=options, executable_path='/usr/local/bin/chromedriver/')
@@ -42,9 +47,10 @@ xpathLinkSearchRight = ']/div/a'
 
 # get url
 def getVeganPageUrl(baseUrl):
-    for countPage in range(1, 63):
-        categoryPage = baseUrl + '?page=' + str(countPage)
-        pageUrl.append(categoryPage)
+    for url in baseUrl:
+        for countPage in range(1, 80):
+            finalUrl = url + '?page=' + str(countPage)
+            pageUrl.append(finalUrl)
 
 # start scraping
 def startScraping(url):
@@ -93,8 +99,7 @@ def storeToArray(vegan_item_array, vegan_link_array, page):
 
 def saveToCsv(data_array):
     df = pd.DataFrame(data_array)
-    df.to_csv('vegan.csv')
-
+    df.to_csv('item_vegan.csv', index=False)
 
 if __name__ == "__main__":
     #generate page url 1-62
