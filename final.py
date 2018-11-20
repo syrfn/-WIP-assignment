@@ -8,20 +8,12 @@ import pandas as pd
 import time
 
 startUrl = 'https://www.tokopedia.com/p/makanan-minuman/'
-
-'''Headless browser configuration'''
-options = Options()
-options.headless = True
-driver = webdriver.Chrome(
-    options=options, executable_path='/usr/local/bin/chromedriver/')
 window_setting = 'window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;'
-
 xpath_category = '//div[@id="DeptIntermedController"]//div[@class="title ta-center"]//a'
 item_left_1 = '//*[@id="content-directory"]/div['
 item_right_1 = ']/div[2]/a[2]/div'
 link_left_1 = '//*[@id="content-directory"]/div['
 link_right_1 = ']/div[3]/div/div[1]/div/div/div/a'
-# xpath only for promoted items
 xpath_promoted_item = '//div[@id="promo-new"]//span[@class="detail__name"]'
 xpath_promoted_shop = '//div[@id="promo-new"]//a[@class="muted"]'
 
@@ -30,6 +22,14 @@ pageUrl = []
 data = []
 xpath_item_array = []
 xpath_link_array = []
+
+
+#Headless browser configuration
+options = Options()
+options.headless = True
+driver = webdriver.Chrome(
+    options=options, executable_path='/usr/local/bin/chromedriver/')
+
 
 def startScraping(url):
     driver.get(url)
@@ -43,7 +43,7 @@ def getCategoryUrl(xpath):
 
 #get page each category
 def getPageUrl(category):
-    for countPage in range(72, 91):
+    for countPage in range(1, 91):
         for categoryUrl in category:
             categoryPage = categoryUrl + '?page=' + str(countPage)
             pageUrl.append(categoryPage)
