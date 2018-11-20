@@ -87,7 +87,7 @@ def storeToArray(item_name_array, shop_url_array, page):
 
 def saveToCsv(data_array):
     df = pd.DataFrame(data_array)
-    df.to_csv('food-bev.csv', index=False)
+    df.to_csv('item_food.csv', index=False)
 
 if __name__ == "__main__":
     #start page
