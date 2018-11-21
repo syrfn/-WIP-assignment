@@ -57,3 +57,6 @@ Following are the result.
 
 **Step 3**\
 After that iterate over the array list to extract item name and shop URL and save the data to a file.
+
+## How to Classify The Product
+This is just a simple classification. There's no algorithm nor machine learning model on it as given only item name and shop URL. The question is "can vegan eat this item?". The assumption applies here is a vegan only can eat food with no animal content in it. So, in the script `analysis.py`, every item_name is checked by `str.contains()` function to see whether it contains non-vegan words or not. And the rest of it is vegan item. 
