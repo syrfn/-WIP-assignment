@@ -54,3 +54,6 @@ Following are the result.
  'https://www.tokopedia.com/p/makanan-minuman/lainnya?page=90'
  ]
 ```
+
+**Step 3**\
+After that iterate over the array list to extract item name and shop URL and save the data to a file.
